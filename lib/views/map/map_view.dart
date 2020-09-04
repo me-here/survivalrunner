@@ -13,7 +13,9 @@ class MapView extends StatelessWidget {
           future: context.watch<MapViewModel>().getInitialCameraPosition(),
           builder: (context, snapshot) {
             return snapshot.hasData
-                ? GoogleMap(initialCameraPosition: snapshot.data)
+                ? GoogleMap(
+                    initialCameraPosition: snapshot.data,
+                  )
                 : Center(
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.red,

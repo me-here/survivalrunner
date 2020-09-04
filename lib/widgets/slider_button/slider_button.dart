@@ -51,8 +51,9 @@ class SliderButton extends StatelessWidget {
     const MAX_TIME = 12.0;
     final pct = context.watch<SliderButtonViewModel>().percentageFilled;
     final selectedTime = pct * (MAX_TIME - MIN_TIME) + MIN_TIME;
-    final mins = selectedTime.floor();
-    final secs = (selectedTime % 1 * 60).floor();
+    final mins = selectedTime.floor().toString();
+    final secsInt = (selectedTime % 1 * 60).floor();
+    final secs = secsInt < 10 ? "0$secsInt" : "$secsInt";
     final targetTime = '$mins:$secs';
 
     return Container(
