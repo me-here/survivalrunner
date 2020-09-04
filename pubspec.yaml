@@ -9,7 +9,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  # Interop
   cupertino_icons: ^0.1.3
+  
+  # State management
+  provider: ^4.3.2+1
+
+  # Other
+  google_maps_flutter: ^0.5.31
+  location: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +26,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/runner_icon.png
