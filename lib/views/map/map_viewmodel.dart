@@ -6,10 +6,9 @@ import 'package:survivalrunner/helpers/location_helper.dart';
 class MapViewModel extends ChangeNotifier {
   LatLng _location;
 
-  Future<LatLng> getCurrentLocation() async {
+  Future<void> getCurrentLocation() async {
     final location = await Location().getLocation();
     _location = LatLng(location.latitude, location.longitude);
-    print(_location);
   }
 
   Future<CameraPosition> getInitialCameraPosition() async {
