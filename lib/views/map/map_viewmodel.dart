@@ -1,16 +1,15 @@
-import 'dart:typed_data';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:survivalrunner/helpers/location_helper.dart';
 
 class MapViewModel extends ChangeNotifier {
   LatLng _location;
+  BitmapDescriptor _followerIcon;
+
+  /// The current location
   LatLng get location => _location;
 
-  BitmapDescriptor _followerIcon;
+  /// The bitmap image of a cadet/zombie following you.
   BitmapDescriptor get followerIcon => _followerIcon;
 
   Future<BitmapDescriptor> getFollowerIcon() async {
@@ -21,12 +20,11 @@ class MapViewModel extends ChangeNotifier {
     return _followerIcon;
   }
 
-  Future<LatLng> getCurrentLocation() async {
-    final location = await Location().getLocation();
-    _location = LatLng(location.latitude, location.longitude);
+  Future<void> updateLocation() async {
+    _location = await LocationHelper.getCurrentLocation();
   }
 
-  CameraPosition getInitialCameraPosition() {
+  CameraPosition get initialCameraPosition {
     return CameraPosition(
       target: _location,
       zoom: 14,

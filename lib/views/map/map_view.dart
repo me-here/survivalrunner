@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,23 +15,17 @@ class MapView extends StatelessWidget {
         return FutureBuilder(
           future: Future.wait(
             [
-              context.watch<MapViewModel>().getCurrentLocation(),
+              context.watch<MapViewModel>().updateLocation(),
               context.watch<MapViewModel>().getFollowerIcon(),
             ],
           ),
           builder: (context, snapshot) {
-            print(context.watch<MapViewModel>().location);
-
-            // return false
-            //     ? Image.asset('assets/images/runner_icon.png')
-            //     : Image.asset('assets/images/yelling_soldier_head.png');
             return snapshot.hasData
                 ? GoogleMap(
                     mapType: MapType.normal,
                     myLocationEnabled: true,
-                    initialCameraPosition: context
-                        .watch<MapViewModel>()
-                        .getInitialCameraPosition(),
+                    initialCameraPosition:
+                        context.watch<MapViewModel>().initialCameraPosition,
                     markers: {
                       Marker(
                         markerId: MarkerId('ffa'),

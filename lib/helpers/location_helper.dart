@@ -1,10 +1,9 @@
-import '../config/keys.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng;
+import 'package:location/location.dart';
 
 class LocationHelper {
-  static String generateLocationPreviewImage(
-      {double latitude, double longitude}) {
-    const zoom = 13;
-
-    return "https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=$zoom&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C$latitude,$longitude&key=${Keys.GOOGLE_API_KEY}";
+  static Future<LatLng> getCurrentLocation() async {
+    final location = await Location().getLocation();
+    return LatLng(location.latitude, location.longitude);
   }
 }
