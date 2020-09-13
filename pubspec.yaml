@@ -19,6 +19,7 @@ dependencies:
   # Other
   google_maps_flutter: ^0.5.31
   location: ^3.0.2
+  stop_watch_timer: 0.6.0+1
 
 dev_dependencies:
   flutter_test:
