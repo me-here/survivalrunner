@@ -17,7 +17,6 @@ class _CircularBorderButtonState extends State<CircularBorderButton> {
 
   void _startTimer() {
     _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-    _stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
   }
 
   void _stopTimer() {
@@ -38,44 +37,63 @@ class _CircularBorderButtonState extends State<CircularBorderButton> {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-        splashColor: Colors.black,
-        color: Colors.black.withOpacity(0.6),
-        onPressed: () {
-          this.setState(() {
-            _isTiming = !_isTiming;
-          });
+      splashColor: Colors.black,
+      color: Colors.black.withOpacity(0.6),
+      onPressed: () {
+        this.setState(() {
+          _isTiming = !_isTiming;
+        });
 
-          if (!_isTiming) {
-            _stopTimer();
-          } else {
-            _startTimer();
-          }
-        },
-        onLongPress: _reset,
-        child:
-            /*Text(
-        "START",
-        style: TextStyle(
-          color: Colors.white.withOpacity(0.7),
-          letterSpacing: 2,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ),
-      padding: EdgeInsets.all(40),
+        if (!_isTiming) {
+          _stopTimer();
+        } else {
+          _startTimer();
+        }
+      },
+      onLongPress: _reset,
+      child: !_isTiming
+          ? Text(
+              "START",
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.7),
+                letterSpacing: 2,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            )
+          : StreamBuilder<int>(
+              stream: _stopWatchTimer.rawTime,
+              initialData: 0,
+              builder: (context, snap) {
+                final value = snap.data;
+                final displayTime = StopWatchTimer.getDisplayTime(value);
+                return Text(
+                  displayTime,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                    letterSpacing: 2,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                );
+              },
+            ),
+      padding: EdgeInsets.all(_isTiming ? 60 : 40),
       shape: CircleBorder(
         side: BorderSide(
           width: 5,
           color: _isTiming ? Colors.green : Colors.red,
         ),
+      ),
+      /*StreamBuilder<int>(
+        stream: _stopWatchTimer.rawTime,
+        initialData: 0,
+        builder: (context, snap) {
+          final value = snap.data;
+          final displayTime = StopWatchTimer.getDisplayTime(value);
+          return _isTiming ? Text(displayTime) 
+        },
       ),*/
-            StreamBuilder<int>(
-                stream: _stopWatchTimer.rawTime,
-                initialData: 0,
-                builder: (context, snap) {
-                  final value = snap.data;
-                  final displayTime = StopWatchTimer.getDisplayTime(value);
-                  return _isTiming ? Text(displayTime) : Text("Start");
-                }));
+    );
   }
 }
