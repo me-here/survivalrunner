@@ -2,10 +2,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:survivalrunner/views/map/map_viewmodel.dart';
 
-class MapView extends StatelessWidget {
-  final Completer<GoogleMapController> _mapController = Completer();
+
+class MapView extends StatefulWidget {
+  @override
+  _MapViewState createState() => _MapViewState();
+}
+
+class _MapViewState extends State<MapView> {
+  GoogleMapController _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +41,12 @@ class MapView extends StatelessWidget {
                     markers: {
                       Marker(
                         markerId: MarkerId('ffa'),
-                        position: context.watch<MapViewModel>().location,
+                        position: context.watch<MapViewModel>().currentLocation,
                         icon: snapshot.data[1],
                       )
                     },
                     onMapCreated: (controller) {
-                      _mapController.complete(controller);
+                      _mapController = controller;
                     },
                   )
                 : Center(
