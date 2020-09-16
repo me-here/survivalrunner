@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:survivalrunner/helpers/location_helper.dart';
 
 class MapViewModel extends ChangeNotifier {
+  MapViewModel() {
+    listenToLocationUpdates();
+  }
+
   LatLng _currentLocation;
   BitmapDescriptor _followerIcon;
-  StreamSubscription _locationSub;
-  StreamSubscription get locationSub => _locationSub;
 
   /// The current location
   LatLng get currentLocation => _currentLocation;
@@ -34,14 +37,19 @@ class MapViewModel extends ChangeNotifier {
     _currentLocation = await LocationHelper.getCurrentLocation();
   }
 
+  LatLng convertToLatLng(LocationData loc) {
+    return LatLng(loc.latitude, loc.longitude);
+  }
+
   void listenToLocationUpdates() {
-    _locationSub =
-        LocationHelper.location.onLocationChanged.listen((newLoc) async {
+    LocationHelper.location.onLocationChanged.listen((newLoc) async {
       if (newLoc.latitude == currentLocation?.latitude &&
           newLoc.longitude == currentLocation?.longitude) {
         return;
       }
-      await updateLocation();
+      _currentLocation = convertToLatLng(newLoc);
+      print(_currentLocation);
+      print('helOOOOO');
       notifyListeners();
     });
   }
