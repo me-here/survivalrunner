@@ -12,6 +12,13 @@ class MapViewModel extends ChangeNotifier {
   /// The bitmap image of a cadet/zombie following you.
   BitmapDescriptor get followerIcon => _followerIcon;
 
+  CameraPosition get initialCameraPosition {
+    return CameraPosition(
+      target: _location,
+      zoom: 14,
+    );
+  }
+
   Future<BitmapDescriptor> getFollowerIcon() async {
     _followerIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 1),
@@ -22,12 +29,5 @@ class MapViewModel extends ChangeNotifier {
 
   Future<void> updateLocation() async {
     _location = await LocationHelper.getCurrentLocation();
-  }
-
-  CameraPosition get initialCameraPosition {
-    return CameraPosition(
-      target: _location,
-      zoom: 14,
-    );
   }
 }
