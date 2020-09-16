@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survivalrunner/helpers/audio_helper.dart';
-import 'package:location/location.dart';
 import 'package:survivalrunner/views/map/map_viewmodel.dart';
 
 class MapView extends StatefulWidget {
@@ -16,29 +15,6 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   Completer<GoogleMapController> _mapController = Completer();
-  LocationData currentLocation;
-  StreamSubscription _locationSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    listenToLocationUpdates();
-  }
-
-  void listenToLocationUpdates() {
-    final _location = new Location();
-
-    _locationSubscription = _location.onLocationChanged.listen((newLoc) {
-      if (newLoc.latitude == currentLocation?.latitude &&
-          newLoc.longitude == currentLocation?.longitude) {
-        return;
-      }
-
-      setState(() {
-        currentLocation = newLoc;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +40,16 @@ class _MapViewState extends State<MapView> {
                     markers: {
                       Marker(
                         markerId: MarkerId('ffa'),
-                        position: LatLng(currentLocation.latitude,
-                            currentLocation.longitude),
+                        position: LatLng(
+                          context
+                              .watch<MapViewModel>()
+                              .currentLocation
+                              .latitude,
+                          context
+                              .watch<MapViewModel>()
+                              .currentLocation
+                              .longitude,
+                        ),
                         icon: snapshot.data[1],
                       )
                     },
