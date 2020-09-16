@@ -48,8 +48,7 @@ class MapViewModel extends ChangeNotifier {
         return;
       }
       _currentLocation = convertToLatLng(newLoc);
-      print(_currentLocation);
-      print('helOOOOO');
+      print('Location updated.');
       notifyListeners();
     });
   }
