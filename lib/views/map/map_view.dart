@@ -24,7 +24,7 @@ class MapView extends StatelessWidget {
             ],
           ),
           builder: (context, snapshot) {
-            GetIt.instance<AudioHelper>().playLocalFile();
+            GetIt.instance<AudioHelper>().playRandomFollowerAudio();
             return snapshot.hasData
                 ? GoogleMap(
                     mapType: MapType.normal,
