@@ -36,6 +36,5 @@ class MapViewModel extends ChangeNotifier {
       target: _currentLocation,
       zoom: 14,
     );
-    notifyListeners();
   }
 }

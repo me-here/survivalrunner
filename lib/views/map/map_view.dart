@@ -19,11 +19,25 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
-  GoogleMapController _mapController;
+  Completer<GoogleMapController> _mapController = Completer();
+  Location _location;
+  LocationData currentLocation;
+  StreamSubscription _locationSubscription;
 
   @override
   void initState() {
     super.initState();
+
+    _location = new Location();
+
+    _locationSubscription = _location.onLocationChanged.listen((currLoc) {
+
+        setState(() {
+          currentLocation = currLoc;
+        });
+
+        print (currentLocation);
+      });
   }
 
   @override
@@ -50,12 +64,12 @@ class _MapViewState extends State<MapView> {
                     markers: {
                       Marker(
                         markerId: MarkerId('ffa'),
-                        position: context.watch<MapViewModel>().currentLocation,
+                        position: LatLng(currentLocation.latitude, currentLocation.longitude),
                         icon: snapshot.data[1],
                       )
                     },
                     onMapCreated: (controller) {
-                      _mapController = controller;
+                      _mapController.complete(controller);
                     },
                   )
                 : Center(
