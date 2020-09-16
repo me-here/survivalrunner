@@ -1,6 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survivalrunner/helpers/audio_helper.dart';
 import 'package:survivalrunner/views/map/map_viewmodel.dart';
@@ -21,8 +24,7 @@ class MapView extends StatelessWidget {
             ],
           ),
           builder: (context, snapshot) {
-            final audioHelper = AudioHelper();
-            audioHelper.playLocalFile();
+            GetIt.instance<AudioHelper>().playLocalFile();
             return snapshot.hasData
                 ? GoogleMap(
                     mapType: MapType.normal,

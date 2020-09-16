@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:survivalrunner/locator.dart';
 import 'package:survivalrunner/screens/map_screen.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(MyApp());
 }
 
