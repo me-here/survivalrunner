@@ -5,13 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-<<<<<<< HEAD
 import 'package:survivalrunner/helpers/audio_helper.dart';
-=======
 import 'package:location/location.dart';
->>>>>>> d1d98221d2e03bb17ad84a1b1cb007cc33cc0ad5
 import 'package:survivalrunner/views/map/map_viewmodel.dart';
-
 
 class MapView extends StatefulWidget {
   @override
@@ -20,24 +16,28 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   Completer<GoogleMapController> _mapController = Completer();
-  Location _location;
   LocationData currentLocation;
   StreamSubscription _locationSubscription;
 
   @override
   void initState() {
     super.initState();
+    listenToLocationUpdates();
+  }
 
-    _location = new Location();
+  void listenToLocationUpdates() {
+    final _location = new Location();
 
-    _locationSubscription = _location.onLocationChanged.listen((currLoc) {
+    _locationSubscription = _location.onLocationChanged.listen((newLoc) {
+      if (newLoc.latitude == currentLocation?.latitude &&
+          newLoc.longitude == currentLocation?.longitude) {
+        return;
+      }
 
-        setState(() {
-          currentLocation = currLoc;
-        });
-
-        print (currentLocation);
+      setState(() {
+        currentLocation = newLoc;
       });
+    });
   }
 
   @override
@@ -64,7 +64,8 @@ class _MapViewState extends State<MapView> {
                     markers: {
                       Marker(
                         markerId: MarkerId('ffa'),
-                        position: LatLng(currentLocation.latitude, currentLocation.longitude),
+                        position: LatLng(currentLocation.latitude,
+                            currentLocation.longitude),
                         icon: snapshot.data[1],
                       )
                     },

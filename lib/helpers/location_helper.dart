@@ -6,4 +6,9 @@ class LocationHelper {
     final location = await Location().getLocation();
     return LatLng(location.latitude, location.longitude);
   }
+
+  // static Stream<LatLng> locationUpdated() {
+  //   final location = Location();
+
+  // }
 }
