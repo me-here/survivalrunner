@@ -24,6 +24,7 @@ class MapView extends StatelessWidget {
             ],
           ),
           builder: (context, snapshot) {
+            // Gets the audio helper from the service locator and plays the audio.
             GetIt.instance<AudioHelper>().playRandomFollowerAudio();
             return snapshot.hasData
                 ? GoogleMap(

@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 
 /// A service that plays audio located in the assets/audio folder.
 class AudioHelper {
-  static AudioCache player = AudioCache();
-  static List<String> audioFileNames;
+  static final player = AudioPlayer();
+  static final _cache = AudioCache(fixedPlayer: player);
+  static List<String> _audioFileNames;
 
   AudioHelper() {
     _getAudioAssets();
@@ -18,7 +20,7 @@ class AudioHelper {
     final pubspecString = await rootBundle.loadString("AssetManifest.json");
     print(pubspecString);
     final Map<String, dynamic> pubspec = jsonDecode(pubspecString);
-    audioFileNames = pubspec.keys
+    _audioFileNames = pubspec.keys
         .where((fileName) => fileName.contains("assets/audio/"))
         .toList();
   }
@@ -26,14 +28,20 @@ class AudioHelper {
   /// Plays a file from assets/audio at random.
   /// Must ignore the assets/ part of the file since AudioCache adds it automatically.
   void playRandomFollowerAudio() async {
-    if (audioFileNames == null) return;
+    if (_audioFileNames == null) return;
     int ignore = "assets/".length;
-    int randIndex = Random().nextInt(audioFileNames.length);
-    String correctedFileName = audioFileNames[randIndex].substring(ignore);
-    player.play(correctedFileName, volume: );
+    int randIndex = Random().nextInt(_audioFileNames.length);
+
+    String correctedFileName = _audioFileNames[randIndex].substring(ignore);
+    _cache.play(correctedFileName);
+  }
+
+  /// Set volume given input double from 0.0 to 1.0
+  void setVolume(double volume) async {
+    player.setVolume(volume);
   }
 
   void stopAudio() async {
-    
+    player.stop();
   }
 }
